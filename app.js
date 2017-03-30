@@ -1,7 +1,10 @@
 const express = require('express');
 const fs = require('fs');
-const mongoose = require('mongoose');
 const uuid = require('uuid');
+
+/* Set up MongoDB connection: */
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/scantrack')
 
 var app = express();
 
@@ -18,11 +21,11 @@ app.get('/spreadsheet', (req, res) => {
 	const fileName = 'tmp/' + uuid.v1();
 	fs.writeFile(fileName, 'start: ' + startDate + '  end: ' + endDate, (err) => {
 		if (err) {
-			console.log("Failed to write file :(");
+			throw err;
 		}
 		res.download(fileName, 'spreadSheet.txt', (err) => {
 			if (err) {
-				console.log("Failed to send file :(");
+				throw err;
 			}
 			fs.unlink(fileName);
 		});
@@ -31,7 +34,7 @@ app.get('/spreadsheet', (req, res) => {
 
 app.listen(8080, (err) => {
 	if (err) {
-		return console.log('Could not start the server!');
+		throw err;
 	}
 	console.log('Server started on port 8080...');
 });
