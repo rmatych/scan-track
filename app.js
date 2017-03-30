@@ -25,6 +25,7 @@ var ScanSchema = new Schema({
 		default: Date.now
 	}
 });
+var ScanModel = mongoose.model('Scan', ScanSchema);
 
 var app = express();
 
