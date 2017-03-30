@@ -1,0 +1,25 @@
+{
+  "name": "scan-track",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmatych/scan-track.git"
+  },
+  "author": "Robert Matych",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmatych/scan-track/issues"
+  },
+  "homepage": "https://github.com/rmatych/scan-track#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.15.2",
+    "body-parser": "*",
+    "mongoose": "*",
+    "uuid": "*"
+  }
+}
