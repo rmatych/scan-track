@@ -10,19 +10,21 @@ app.get('/', (req, res) => {
 	res.sendFile('index.html');
 });
 app.get('/spreadsheet', (req, res) => {
-	if (req.query.start == undefined || req.query.end == undefined) {
+	const startDate = req.query.start;
+	const endDate = req.query.end;
+	if (startDate == undefined || endDate == undefined) {
 		return res.status(500).send('Please provide a date range query!');
 	}
-
-	fs.writeFile('tmp/test.txt', 'start: ' + req.query.start + '  end: ' + req.query.end, (err) => {
+	const fileName = 'tmp/' + uuid.v1();
+	fs.writeFile(fileName, 'start: ' + startDate + '  end: ' + endDate, (err) => {
 		if (err) {
 			console.log("Failed to write file :(");
 		}
-		res.download('tmp/test.txt', (err) => {
+		res.download(fileName, 'spreadSheet.txt', (err) => {
 			if (err) {
 				console.log("Failed to send file :(");
 			}
-			fs.unlink('tmp/test.txt');
+			fs.unlink(fileName);
 		});
 	});
 });
