@@ -4,7 +4,27 @@ const uuid = require('uuid');
 
 /* Set up MongoDB connection: */
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/scantrack')
+mongoose.connect('mongodb://127.0.0.1:27017/packertracker');
+
+/* Check connection results: */
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Can\'t connect with Mongoose!'));
+db.once('open', () => {
+  console.log('Connected to the packertracker database...');
+});
+
+/* Set up MongoDB schema: */
+var Schema = mongoose.Schema;
+var ScanSchema = new Schema({
+	location: String,
+	barcode: Number,
+	employee: Number,
+	tag: Number,
+	date: {
+		type: Date,
+		default: Date.now
+	}
+});
 
 var app = express();
 
