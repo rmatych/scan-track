@@ -1,8 +1,7 @@
 const express = require('express');
 const fs = require('fs');
-const mongoose = reqeuire('mongoose');
-const uuid = require('uuid');
-
+//const mongoose = require('mongoose');
+//const uuid = require('uuid');
 
 var app = express();
 
@@ -28,6 +27,9 @@ app.get('/spreadsheet', (req, res) => {
 	});
 });
 
-app.listen(3000, () => {
-	console.log('Server started on port 3000...');
+app.listen(8080, (err) => {
+	if (err) {
+		return console.log('Could not start the server!');
+	}
+	console.log('Server started on port 8080...');
 });
