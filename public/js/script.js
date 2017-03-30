@@ -6,5 +6,10 @@ $('.input-daterange').datepicker({
 });
 
 document.getElementById("submit").onclick = () => {
-	console.log(document.getElementById("start").value);
+	let startDate = document.getElementById("start").value;
+	let endDate = document.getElementById("end").value;
+	let url = '/spreadsheet?start=' + startDate + '&end=' + endDate;
+	let link = document.createElement("a");
+	link.href = url;
+	link.click();
 }

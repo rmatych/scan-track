@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
-//const mongoose = require('mongoose');
-//const uuid = require('uuid');
+const mongoose = require('mongoose');
+const uuid = require('uuid');
 
 var app = express();
 
