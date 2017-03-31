@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const uuid = require('uuid');
+const mongoXlsx = require('mongo-xlsx');
 
 /* Set up MongoDB connection: */
 const mongoose = require('mongoose');
@@ -40,17 +41,30 @@ app.get('/spreadsheet', (req, res) => {
 		return res.status(500).send('Please provide a date range query!');
 	}
 	const fileName = 'tmp/' + uuid.v1();
-	fs.writeFile(fileName, 'start: ' + startDate + '  end: ' + endDate, (err) => {
-		if (err) {
-			throw err;
-		}
-		res.download(fileName, 'spreadSheet.txt', (err) => {
+
+	var mongodata = [];
+	ScanSchema.find(function(err, scans) {
+    	for (let i = 0; i < scans.length; i++) {
+            mongodata[i] = motors[i];
+        }
+    });
+    var datamodel = mongoXlsx.buildDynamicModel(mongodata);
+    mongoXlsx.mongoData2Xlsx(mongodata, datamodel, (err, data) => {
+    	if (err) {
+    		throw err;
+    	}
+		fs.writeFile(fileName, data, (err) => {
 			if (err) {
 				throw err;
 			}
-			fs.unlink(fileName);
+			res.download(fileName, 'spreadSheet.xlsx', (err) => {
+				if (err) {
+					throw err;
+				}
+				fs.unlink(fileName);
+			});
 		});
-	});
+    });
 });
 
 app.listen(8080, (err) => {
