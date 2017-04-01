@@ -18,10 +18,8 @@
   "homepage": "https://github.com/rmatych/scan-track#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.15.2",
-    "body-parser": "*",
+    "express": "*",
     "mongoose": "*",
-    "json2xls": "*",
-    "uuid": "*"
+    "json2xls": "*"
   }
 }
