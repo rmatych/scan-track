@@ -21,6 +21,7 @@
     "express": "^4.15.2",
     "body-parser": "*",
     "mongoose": "*",
+    "json2xls": "*",
     "uuid": "*"
   }
 }

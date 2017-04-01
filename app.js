@@ -1,7 +1,5 @@
 const express = require('express');
-const fs = require('fs');
-const uuid = require('uuid');
-const mongoXlsx = require('mongo-xlsx');
+const json2xls = require('json2xls');
 
 /* Set up MongoDB connection: */
 const mongoose = require('mongoose');
@@ -29,6 +27,7 @@ var ScanSchema = new Schema({
 var ScanModel = mongoose.model('Scan', ScanSchema);
 
 var app = express();
+app.use(json2xls.middleware);
 
 app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
@@ -40,31 +39,9 @@ app.get('/spreadsheet', (req, res) => {
 	if (startDate == undefined || endDate == undefined) {
 		return res.status(500).send('Please provide a date range query!');
 	}
-	const fileName = 'tmp/' + uuid.v1();
-
-	var mongodata = [];
-	ScanSchema.find(function(err, scans) {
-    	for (let i = 0; i < scans.length; i++) {
-            mongodata[i] = motors[i];
-        }
-    });
-    var datamodel = mongoXlsx.buildDynamicModel(mongodata);
-    mongoXlsx.mongoData2Xlsx(mongodata, datamodel, (err, data) => {
-    	if (err) {
-    		throw err;
-    	}
-		fs.writeFile(fileName, data, (err) => {
-			if (err) {
-				throw err;
-			}
-			res.download(fileName, 'spreadSheet.xlsx', (err) => {
-				if (err) {
-					throw err;
-				}
-				fs.unlink(fileName);
-			});
-		});
-    });
+	ScanModel.find((err, mongodata) => {
+    		res.xls('spreadsheet.xlsx', mongodata, {fields: ['employee', 'location', 'tag', 'date']});
+    	});
 });
 
 app.listen(8080, (err) => {
